@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+
+<html data-theme="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="arquiteto-agentes-contabil-v5" name="curso"/>
+<title>Agentes no Contábil e no Financeiro · Caderno · INEMA.CLUB PRO</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="assets/aula.css" rel="stylesheet"/>
+<script>(function(){try{var m=document.querySelector('meta[name=curso]');var CK=(m&&m.content)||'v5:curso';var s=JSON.parse(localStorage.getItem(CK));if(s&&s.prefs&&s.prefs.theme)document.documentElement.setAttribute('data-theme',s.prefs.theme);}catch(e){}})();</script>
+<!--
+  PROTOCOLO DE DESCOBERTA (formato-curso-v5, Passo 0 — INFERIDO a partir do curso-base pffia e do pedido "cadernos por profissão", 2026-09-07; sujeito a correção do usuário):
+  - Público específico: contadores de escritório e profissionais de área financeira de empresas médias que já fizeram ou vão fazer o curso-base Arquiteto de Trabalho com IA.
+  - Profissões-alvo (≥2): contadora de escritório contábil · analista financeiro de empresa média (secundária: controller, no papel de quem aprova).
+  - Familiaridade com tecnologia: usa sistema contábil, planilha, portais do governo com certificado digital e chat de IA para textos; nunca programou.
+  - Resultado prático esperado: sair com um processo contábil ou financeiro mapeado e especificado no Kit do Arquiteto de Agentes, com segregação entre quem lança e quem aprova, sigilo fiscal e senhas fora do alcance.
+  - Tempo por sessão: 15–25 min por aula. Caderno complementar: 3 aulas, pressupõe o curso-base.
+
+  AUDITORIA ANTI-CLONE (contra pffia e os cadernos saúde/advocacia):
+  - pffia usou o contador Roberto no FECHAMENTO MENSAL e a analista Fernanda na CONFERÊNCIA DE NOTAS. Aqui: Helena (contadora, COBRANÇA DE DOCUMENTOS e OBRIGAÇÕES MENSAIS) e Diego (analista financeiro, CONTAS A PAGAR e CONCILIAÇÃO com aprovação do controller). Processos e situações distintos.
+  - Sequência de quadros: aula 1 qba@1 · qanchor@3; aula 2 qsteps@2 · qerr@4; aula 3 qsteps@2 · qapply@4. Modos: tarefa · tarefa · prompt (saúde usa analise na aula 2; advocacia tem aula 2 FUNDAMENTO).
+-->
+<style>
+  .view{display:none}.view.active{display:block}
+  .lnav{max-width:1160px;margin:0 auto 5vh;padding:0 clamp(24px,5vw,60px);display:flex;justify-content:space-between;gap:12px}
+  .lnav a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--line2);border-radius:12px;padding:12px 16px}
+  .lnav a:hover{border-color:var(--accent);color:var(--ink)}
+  #v-trilha .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+  #v-trilha .t-hero{position:relative;overflow:hidden;padding:20vh 0 8vh;border-bottom:1px solid var(--line)}
+  #v-trilha h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,6.4vw,72px);line-height:1;letter-spacing:-.025em;margin:0 0 22px}
+  #v-trilha h1 em{font-style:italic;color:var(--accent)}
+  #v-trilha .lead{font-family:var(--serif);font-size:clamp(19px,2.1vw,24px);line-height:1.5;color:var(--ink-soft);max-width:46ch;margin:0 0 30px}
+  #v-trilha section{padding:8vh 0}
+  #v-trilha .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+  #v-trilha h2{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.6vw,38px);margin:0 0 28px}
+  #v-trilha .aulas{display:grid;gap:14px}
+  #v-trilha .au{display:grid;grid-template-columns:56px 1fr auto;gap:20px;align-items:center;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 24px}
+  #v-trilha .au .num{font-family:var(--serif);font-size:30px;color:var(--accent);text-align:center}
+  #v-trilha .au h3{font-family:var(--serif);font-weight:500;font-size:21px;margin:0 0 5px}
+  #v-trilha .au p{margin:0;color:var(--muted);font-size:14.5px}
+  #v-trilha .au .meta{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;text-align:right}
+  #v-trilha .au .prog{position:static;margin-top:10px;height:5px;border-radius:99px;background:var(--line);overflow:hidden;max-width:220px;width:auto}
+  #v-trilha .au .prog i{display:block;height:100%;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+  #v-trilha footer{max-width:1080px;margin:0 auto;padding:6vh clamp(24px,5vw,60px) 12vh;color:var(--faint);text-align:center;font-family:var(--serif);font-style:italic;border-top:1px solid var(--line)}
+  #v-trilha .fontes{color:var(--muted);font-size:13.5px;line-height:1.6;max-width:70ch}
+  #v-trilha .fontes a{color:var(--ink-soft)}
+  @media(max-width:720px){#v-trilha .au{grid-template-columns:44px 1fr}#v-trilha .au .meta{grid-column:2;text-align:left}}
+</style>
+<link href="https://inematds.github.io/arquiteto-agentes-contabil/curso.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/arquiteto-agentes-contabil/en/curso.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/arquiteto-agentes-contabil/es/curso.html" hreflang="es" rel="alternate"/></head>
+<body><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="./curso.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="en/curso.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="es/curso.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<div class="bar"><div class="bar-inner">
+<span class="brand"><a class="mark" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a><a class="pro" href="https://inema.pro" rel="noopener" target="_blank">PRO</a><a class="course" href="landing.html">Agentes no Contábil e no Financeiro</a></span>
+<a class="back" href="#trilha" style="display:none">← trilha</a>
+<button class="pill" id="pill" style="display:none">0 lido</button>
+<button id="revbtn">revisar <span id="revn">0</span></button>
+<button id="exbtn">exercícios</button>
+<button id="jorbtn">jornada</button>
+<button aria-label="Como funciona" id="helpbtn">?</button>
+<button aria-label="Preferências de leitura" id="prefsbtn">Aa</button>
+<button id="themebtn">tema: escuro</button>
+</div></div>
+<section class="view" id="v-trilha">
+<header class="t-hero"><div class="wrap">
+<p class="kicker">Caderno de profissão · Contábil e financeiro · 3 aulas</p>
+<h1>Agentes no contábil<br/>e no <em>financeiro</em></h1>
+<p class="lead">Saia com um processo do seu escritório ou da sua área financeira especificado no Kit do Arquiteto de Agentes: quem lança não aprova, o agente nunca transmite nem paga, senhas e dados bancários fora do alcance, e a conferência batendo com o extrato.</p>
+</div></header>
+<section><div class="wrap">
+<div class="statcards"></div>
+<p class="eyebrow">Aulas</p>
+<h2>Da cobrança de documentos ao pagamento aprovado</h2>
+<div class="aulas">
+<a class="au on" data-aula="1" href="#aula-1">
+<div class="num">1</div>
+<div><h3>Dez processos do contábil e do financeiro, e a regra de quem lança não aprova</h3><p>Saia com a lista dos dez processos e um deles mapeado em seis elos, com a segregação entre executar e aprovar escrita.</p><div class="prog"><i></i></div></div>
+<div class="meta">21 min · abrir →</div>
+</a>
+<a class="au on" data-aula="2" href="#aula-2">
+<div class="num">2</div>
+<div><h3>Contexto e governança: sigilo fiscal, certificados e a matriz</h3><p>Saia com o inventário de contexto e a matriz de permissões do seu agente, com senhas, dados bancários e dados de um cliente nunca cruzando para outro.</p><div class="prog"><i></i></div></div>
+<div class="meta">21 min · abrir →</div>
+</a>
+<a class="au on" data-aula="3" href="#aula-3">
+<div class="num">3</div>
+<div><h3>Sua especificação no kit: cobrança de documentos e obrigações</h3><p>Saia com a especificação do agente montada no kit, a partir do preset contábil, e ensaiada num chat de IA.</p><div class="prog"><i></i></div></div>
+<div class="meta">24 min · abrir →</div>
+</a>
+</div>
+</div></section>
+<section><div class="wrap">
+<p class="eyebrow">Antes de começar</p>
+<h2>Este caderno pressupõe o curso-base</h2>
+<p class="fontes">Os seis elos, o pedido de longo horizonte, a cadeia, o inventário de contexto, a ficha de qualidade e a matriz de permissões estão explicados no curso <a href="https://inematds.github.io/pffia/" rel="noopener" target="_blank">Arquiteto de Trabalho com IA</a>. Aqui eles são aplicados ao escritório contábil e à área financeira. A prática da aula 3 usa o <a href="https://inematds.github.io/kit-arquiteto-agentes/" rel="noopener" target="_blank">Kit do Arquiteto de Agentes</a>, com o preset contábil.</p>
+</div></section>
+<footer><div class="wrap">Agentes no Contábil e no Financeiro · INEMA.CLUB PRO</div></footer>
+</section>
+<!-- ===== AULA 1 · FUNDAMENTO ===== -->
+<section class="view" data-aula="1" data-tempo="21min" id="v-aula-1">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">Caderno contábil e financeiro · Aula 1</p>
+<h1>Dez processos,<br/><em>e quem lança não aprova</em></h1>
+<p class="promise">Ao fim desta aula você consegue listar os dez processos do seu escritório ou da sua área financeira que um agente pode executar, e mapear um deles em seis elos com a linha entre executar e aprovar escrita.</p>
+<p class="why">Contabilidade e financeiro têm uma vantagem sobre qualquer outra área na hora de colocar agentes: a governança já existe. Quem lança não aprova, quem paga não confere, quem assina responde. Essas regras estão em manuais de auditoria há décadas. O que falta é aplicá-las a um trabalhador que faz exatamente o que a instrução diz. Esta aula pega os processos que hoje consomem a semana de um escritório ou de um departamento financeiro e mostra onde o agente entra e onde ele para, sempre antes da assinatura.</p>
+<p class="cue"><span class="arw">↓</span> role para estudar</p>
+</div>
+<!-- herofig · METÁFORA-DO-MUNDO-REAL: duas mesas em sequência, a de quem lança (pilha de documentos, calculadora) e a de quem aprova (carimbo e caneta), com o balcão entre elas -->
+<div class="herofig"><svg aria-hidden="true" fill="none" viewbox="0 0 300 240">
+<path d="M20 200 h260" stroke="#948DA6" stroke-width="2"></path>
+<rect fill="#1a1824" height="60" rx="4" stroke="#948DA6" stroke-width="2" width="110" x="30" y="140"></rect>
+<rect fill="#ECE6D9" height="22" opacity=".85" rx="2" width="40" x="40" y="118"></rect><rect fill="#ECE6D9" height="22" opacity=".7" rx="2" width="40" x="44" y="112"></rect><rect fill="#ECE6D9" height="22" opacity=".55" rx="2" width="40" x="48" y="106"></rect>
+<rect fill="#221f2e" height="20" rx="3" stroke="#948DA6" stroke-width="2" width="34" x="96" y="120"></rect><path d="M102 126 h22 M102 132 h14" stroke="#7CE0C6" stroke-width="2"></path>
+<rect fill="#1a1824" height="60" rx="4" stroke="#948DA6" stroke-width="2" width="110" x="160" y="140"></rect>
+<rect fill="#ECE6D9" height="20" opacity=".9" rx="2" width="60" x="176" y="120"></rect><path d="M184 130 h44" opacity=".5" stroke="#0E0D14" stroke-width="2"></path>
+<g transform="rotate(-12 246 118)"><rect fill="#F2B45C" fill-opacity=".15" height="18" rx="3" stroke="#F2B45C" stroke-width="2.5" width="28" x="232" y="108"></rect></g>
+<path d="M250 104 v-26" stroke="#948DA6" stroke-linecap="round" stroke-width="4"></path><rect fill="#948DA6" height="10" rx="2" width="16" x="242" y="72"></rect>
+<path d="M150 90 v120" stroke="#F2B45C" stroke-dasharray="6 5" stroke-width="2"></path>
+<circle cx="70" cy="72" fill="#7CE0C6" r="10"></circle><path d="M60 84 q10 -6 20 0 v18 h-20z" fill="#7CE0C6"></path>
+<circle cx="220" cy="72" fill="#948DA6" r="10"></circle><path d="M210 84 q10 -6 20 0 v18 h-20z" fill="#948DA6"></path>
+<text fill="#7CE0C6" font-family="monospace" font-size="9" x="46" y="60">lança</text>
+<text fill="#F2B45C" font-family="monospace" font-size="9" x="200" y="60">aprova</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<section class="step" data-fig="1" data-kind="fundamento">
+<h2><span class="n">01</span> A segregação de funções já é a matriz de permissões do agente</h2>
+<p>Auditoria chama de <span class="gterm" data-def="Princípio de controle interno: a pessoa que executa uma operação (lança, paga, emite) não pode ser a mesma que a aprova ou confere. Reduz erro e fraude." tabindex="0">segregação de funções</span> a regra de que quem executa não aprova. Num escritório contábil, a assistente lança e a contadora fecha. Numa empresa, o analista prepara o pagamento e o controller aprova. Para o agente, a regra se traduz sem tradução: ele executa (confere, classifica, prepara, cobra, calcula) e nunca aprova, nunca transmite ao governo, nunca paga, nunca fecha o mês.</p>
+<p>Essa é a linha deste caderno. Do lado do agente, tudo que uma assistente bem treinada faz sem pedir assinatura. Do lado da pessoa, tudo que hoje exige a assinatura, o certificado digital ou a senha do banco. Não é limitação: é a mesma linha que já existe, agora escrita para alguém que não improvisa.</p>
+<!-- ex-prof --><p>Helena, contadora de um escritório com 60 clientes, passa a primeira semana do mês cobrando documentos e a segunda conferindo obrigações. Quando listou o que a assistente faz sem assinatura dela, deu 80% do trabalho: conferir pastas, cobrar o que falta, calcular as guias, montar a lista de pendências. Os outros 20% (revisar o cálculo, transmitir, assinar) continuam com ela. O agente mira nos 80%.</p>
+<div class="qbefore-after">
+<div class="qba-col qba-before"><p class="qba-lbl">Antes</p><p class="qba-txt">Do dia 1 ao 6, Helena e duas assistentes abrem 60 pastas, comparam com a lista de documentos esperados, mandam e-mails de cobrança um a um e anotam numa planilha quem respondeu. Uma semana, e no dia 7 ainda faltam 15 clientes.</p></div>
+<div class="qba-col qba-depois"><p class="qba-lbl">Depois</p><p class="qba-txt">O agente confere as 60 pastas na madrugada do dia 2, envia a cobrança padrão do que falta, reconfere a cada chegada e, no dia 6 às 8h, entrega a lista: 44 completas, 16 com o que falta em cada uma. As assistentes ligam só para as 16.</p></div>
+<div class="qba-saldo"><b>Saldo:</b> de uma semana de três pessoas para uma manhã de ligações, e o cálculo das obrigações começa no dia 6 em vez do dia 9.</div>
+</div>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como lido</button>
+</section>
+<section class="step" data-fig="2" data-kind="fundamento">
+<h2><span class="n">02</span> Os dez processos do escritório e da área financeira</h2>
+<p>Os dez processos críticos que quase todo escritório contábil ou departamento financeiro tem: <b>cobrança de documentos</b> dos clientes ou das áreas; <b>classificação</b> de lançamentos; <b>conciliação</b> bancária; <b>obrigações acessórias</b> (guias, declarações, o que o governo pede todo mês); <b>folha</b>, na parte de coleta e conferência; <b>contas a pagar</b>; <b>contas a receber</b> e cobrança; <b>relatórios gerenciais</b>; <b>cadastro</b> (abertura, alteração, procurações, certificados com prazo); e <b>dúvidas recorrentes</b> de clientes ou de áreas.</p>
+<p>Em todos, o agente executa a parte repetível e para antes da assinatura. Escolha o primeiro pelo critério do curso-base (repete, mais de uma pessoa, erro custa dinheiro) e por uma regra extra deste caderno: comece pelo que não transmite nem paga. Cobrança de documentos e conciliação são candidatos naturais; transmitir declaração e pagar fornecedor ficam para depois de meses de registro limpo, e talvez nunca.</p>
+<!-- ex-prof --><p>Diego, analista financeiro de uma indústria com 200 funcionários, cuida de contas a pagar: 300 títulos por mês, cada um conferido contra pedido e nota antes de ir para a aprovação do controller. É o processo seis. O agente que confere título, pedido e nota e prepara o lote para aprovação é administrativo do começo ao fim. O que paga é o controller, com a senha do banco que o agente nunca vê.</p>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como lido</button>
+</section>
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> Cobrança de documentos em seis elos</h2>
+<p>Aplicando o mapa do curso-base ao processo mais comum do escritório. <b>Entrada</b>: do dia 1 ao 5, documentos chegam por e-mail e pelo aplicativo do escritório; a lista do que cada cliente deve mandar já existe. <b>Decisões de regra</b>: cliente não mandou o extrato até o dia 5? cobrar com o modelo. Documento sem CNPJ ou sem mês? separar e pedir de novo. <b>Decisão de julgamento</b>: aceitar documento depois do prazo interno? Fica com a contadora.</p>
+<p><b>Ação</b>: conferir a pasta contra a lista e enviar a cobrança padrão só do que falta. <b>Verificação</b>: nenhuma cobrança cita item que já chegou; o nome do cliente e o prazo estão certos. <b>Exceção</b>: cliente com dois CNPJs na mesma pasta, documento ilegível pela segunda vez, cliente que mudou de regime no mês. <b>Resultado</b>: no dia 6, a contadora sabe quais pastas estão completas e o que falta em cada uma. A restrição que não pode faltar: dado de um cliente nunca aparece na mensagem de outro.</p>
+<!-- ex-prof --><p>Na primeira rodada de Helena, o agente cobrou de um cliente um extrato que já estava na pasta, com o nome do arquivo diferente do esperado. A verificação "nenhuma cobrança cita item que já chegou" não pegou porque o agente não reconheceu o arquivo. A regra nova: documento com nome fora do padrão vai para a lista de dúvidas, não para a cobrança. Uma linha, e o problema não voltou.</p>
+<div class="qanchor"><p>O agente do contábil chega até a porta da assinatura e para. Tudo que vem antes dela é dele; a assinatura, o certificado e a senha são da pessoa.</p></div>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como lido</button>
+</section>
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Contas a pagar na empresa: o mesmo mapa, outra assinatura</h2>
+<p>Na área financeira de uma empresa, o processo muda de nome e mantém a estrutura. <b>Entrada</b>: títulos a vencer nos próximos 7 dias, do sistema de gestão. <b>Decisões de regra</b>: título tem pedido de compra e nota correspondentes? Valor bate com o pedido dentro da tolerância (2%)? Fornecedor está no cadastro aprovado? <b>Julgamento</b>: pagar antecipado com desconto? Fica com o controller. <b>Ação</b>: montar o lote de pagamento com os títulos que passaram, e a lista dos que não passaram com o motivo.</p>
+<p><b>Verificação</b>: soma do lote bate com a soma dos títulos; nenhum fornecedor fora do cadastro; nenhuma divergência acima da tolerância no lote. <b>Exceção</b>: divergência acima de 2%, fornecedor novo, título duplicado. <b>Resultado</b>: o controller aprova um lote conferido em vez de 300 títulos um a um. O agente nunca chega perto do banco: o lote vai para aprovação no sistema, e o pagamento é feito por quem tem a senha.</p>
+<!-- ex-prof --><p>Diego achou que o ganho seria tempo, e foi, de dois dias para duas horas por semana. Mas o ganho que o controller notou foi outro: o agente pegou, em três meses, quatro títulos duplicados e um fornecedor com dados bancários alterados sem registro no cadastro. Antes, isso dependia de alguém notar entre 300 títulos. Agora é uma regra que roda toda vez.</p>
+<div class="quiz" data-answer="c">
+<p class="qk">Teste-se</p><p class="q">O controller quer que o agente, depois de conferir o lote, também execute o pagamento no banco "para ganhar mais um dia". Pela regra deste caderno, o que você responde?</p>
+<button class="opt" data-fb="Não. Pagar é a ação com consequência que não se desfaz e exige a senha do banco. Nem com aprovação prévia o agente executa o pagamento na primeira versão." data-k="a">pode, desde que o controller aprove o lote antes</button>
+<button class="opt" data-fb="Perto, mas incompleto. O limite por valor não resolve: o agente continuaria com acesso à senha do banco, que é dado fora do alcance por definição." data-k="b">pode para títulos abaixo de 5 mil reais</button>
+<button class="opt" data-fb="Isso. Quem confere não paga: é a segregação de funções aplicada ao agente. Ele prepara o lote conferido; o pagamento é de quem tem a senha, e a senha nunca entra no alcance do agente." data-k="c">não: quem confere não paga, e a senha do banco fica fora do alcance do agente</button>
+<p class="qfb"></p>
+</div>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como lido</button>
+</section>
+<section class="practice" data-mode="tarefa" data-practice="p1">
+<p class="pk">Pratique agora <span class="pcount">0/4 feito</span></p>
+<h3 class="ph">Escolha o processo e escreva onde a assinatura mora</h3>
+<p class="pgoal">Em cerca de 12 minutos, listar os dez processos do seu escritório ou da sua área, escolher um que não transmite nem paga, e mapeá-lo em seis elos com a linha da assinatura marcada.</p>
+<p class="psafe">É papel ou planilha sua, sem dado de cliente ou fornecedor: você escreve processos, não lançamentos. Nada muda no sistema. Se um processo parecer que termina com uma ação do agente e não com uma assinatura, marque à margem: é o sinal de que a linha está no lugar errado.</p>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Copie a lista dos dez processos do passo 02 e ajuste à sua realidade. Ao lado de cada um, quem executa hoje, quem aprova ou assina, e quanto tempo por mês.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Marque em cada processo onde está a assinatura, o certificado ou a senha: transmitir, pagar, fechar, assinar. Tudo antes disso é candidato a agente; isso e o que vem depois é da pessoa.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Escolha um processo que não transmite nem paga (cobrança de documentos, conciliação, conferência de contas a pagar). Escreva o resultado em uma frase: o que a contadora ou o controller passa a saber ou ter, e em que dia.</label></li>
+<li><label><input data-ptask="4" type="checkbox"/> Mapeie os seis elos, com R ou J nas decisões e verificação ao lado de cada ação. Ficou pronto quando a última ação do agente é "preparar para aprovação" ou "entregar lista", nunca "transmitir", "pagar" ou "fechar", e existe a restrição "dado de um cliente nunca aparece para outro".</label></li>
+</ol>
+<p class="pdone">Você acabou de aplicar a segregação de funções a um agente antes de ele existir. Esse mapa entra no kit na aula 3, e a linha da assinatura vira a linha "aprovar: não pode" da matriz.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a linha da segregação de funções. À esquerda, o que se executa sem assinatura (conferir, classificar, cobrar, calcular, preparar): território do agente. À direita, o que exige assinatura, certificado ou senha (transmitir, pagar, fechar, assinar): território da pessoa. A linha já existia; agora está escrita." data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<path d="M110 14 v170" stroke="#F2B45C" stroke-dasharray="6 5" stroke-width="2"></path>
+<text fill="#7CE0C6" font-family="monospace" font-size="8" x="20" y="26">executa</text><text fill="#F2B45C" font-family="monospace" font-size="8" x="128" y="26">aprova/assina</text>
+<g fill="#ECE6D9" font-family="monospace" font-size="7">
+<rect height="16" rx="3" stroke="#7CE0C6" stroke-width="1.2" width="84" x="14" y="36"></rect><text x="20" y="47">conferir</text>
+<rect height="16" rx="3" stroke="#7CE0C6" stroke-width="1.2" width="84" x="14" y="58"></rect><text x="20" y="69">classificar</text>
+<rect height="16" rx="3" stroke="#7CE0C6" stroke-width="1.2" width="84" x="14" y="80"></rect><text x="20" y="91">cobrar</text>
+<rect height="16" rx="3" stroke="#7CE0C6" stroke-width="1.2" width="84" x="14" y="102"></rect><text x="20" y="113">calcular</text>
+<rect height="16" rx="3" stroke="#7CE0C6" stroke-width="1.2" width="84" x="14" y="124"></rect><text x="20" y="135">preparar lote</text>
+<rect height="16" rx="3" stroke="#F2B45C" stroke-width="1.2" width="84" x="122" y="36"></rect><text fill="#F2B45C" x="128" y="47">transmitir</text>
+<rect height="16" rx="3" stroke="#F2B45C" stroke-width="1.2" width="84" x="122" y="58"></rect><text fill="#F2B45C" x="128" y="69">pagar</text>
+<rect height="16" rx="3" stroke="#F2B45C" stroke-width="1.2" width="84" x="122" y="80"></rect><text fill="#F2B45C" x="128" y="91">fechar o mês</text>
+<rect height="16" rx="3" stroke="#F2B45C" stroke-width="1.2" width="84" x="122" y="102"></rect><text fill="#F2B45C" x="128" y="113">assinar</text>
+</g>
+<rect fill="#221f2e" height="22" rx="5" stroke="#7CE0C6" stroke-width="1.5" width="84" x="14" y="150"></rect><text fill="#7CE0C6" font-family="monospace" font-size="7.5" x="34" y="165">agente</text>
+<circle cx="164" cy="161" r="10" stroke="#F2B45C" stroke-width="1.5"></circle><text fill="#F2B45C" font-family="monospace" font-size="9" x="160" y="165">H</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="30" y="192">80% do trabalho fica à esquerda</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; os dez processos em duas colunas, escritório e empresa se sobrepondo. Os dois verdes (cobrança de documentos, conciliação) não transmitem nem pagam: por onde começar. Os dois âmbar (obrigações, contas a pagar) têm assinatura no fim: o agente vai até a porta." data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<g fill="#ECE6D9" font-family="monospace" font-size="6.5">
+<rect fill="#7CE0C6" height="15" opacity=".85" rx="3" width="92" x="12" y="14"></rect><text fill="#0E0D14" x="16" y="25">cobrança de docs</text>
+<rect height="15" rx="3" stroke="#948DA6" stroke-width="1" width="92" x="12" y="33"></rect><text x="16" y="44">classificação</text>
+<rect fill="#7CE0C6" height="15" opacity=".85" rx="3" width="92" x="12" y="52"></rect><text fill="#0E0D14" x="16" y="63">conciliação</text>
+<rect height="15" rx="3" stroke="#F2B45C" stroke-width="1.2" width="92" x="12" y="71"></rect><text fill="#F2B45C" x="16" y="82">obrigações (assina)</text>
+<rect height="15" rx="3" stroke="#948DA6" stroke-width="1" width="92" x="12" y="90"></rect><text x="16" y="101">folha (coleta)</text>
+<rect height="15" rx="3" stroke="#F2B45C" stroke-width="1.2" width="92" x="116" y="14"></rect><text fill="#F2B45C" x="120" y="25">contas a pagar (assina)</text>
+<rect height="15" rx="3" stroke="#948DA6" stroke-width="1" width="92" x="116" y="33"></rect><text x="120" y="44">contas a receber</text>
+<rect height="15" rx="3" stroke="#948DA6" stroke-width="1" width="92" x="116" y="52"></rect><text x="120" y="63">relatórios</text>
+<rect height="15" rx="3" stroke="#948DA6" stroke-width="1" width="92" x="116" y="71"></rect><text x="120" y="82">cadastro/prazos</text>
+<rect height="15" rx="3" stroke="#948DA6" stroke-width="1" width="92" x="116" y="90"></rect><text x="120" y="101">dúvidas recorr.</text>
+</g>
+<text fill="#7CE0C6" font-family="monospace" font-size="7.5" x="12" y="132">verde: não transmite nem paga → começar</text>
+<text fill="#F2B45C" font-family="monospace" font-size="7.5" x="12" y="146">(assina) = termina em assinatura → até a porta</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="12" y="176">repete · +1 pessoa · erro custa dinheiro</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a cobrança de documentos em seis elos. Documentos entram do dia 1 ao 5; a pasta é conferida contra a lista; a cobrança padrão sai só do que falta; a verificação impede cobrar o que já chegou; dúvidas (nome fora do padrão, dois CNPJs) vão para a contadora; no dia 6, a lista de status. A parede vermelha: dado de um cliente nunca cruza para outro." data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="20" rx="4" stroke="#948DA6" stroke-width="1.5" width="76" x="12" y="14"></rect><text fill="#ECE6D9" font-family="monospace" font-size="7" x="16" y="28">docs dia 1–5</text>
+<path d="M50 34 v12" stroke="#948DA6" stroke-width="1.2"></path>
+<rect height="20" rx="4" stroke="#948DA6" stroke-width="1.5" width="76" x="12" y="46"></rect><text fill="#ECE6D9" font-family="monospace" font-size="7" x="16" y="60">confere x lista</text>
+<path d="M50 66 v12" stroke="#948DA6" stroke-width="1.2"></path>
+<rect height="20" rx="4" stroke="#948DA6" stroke-width="1.5" width="76" x="12" y="78"></rect><text fill="#ECE6D9" font-family="monospace" font-size="7" x="16" y="92">cobra o que falta</text>
+<path d="M50 98 v12" stroke="#7CE0C6" stroke-width="1.2"></path>
+<rect height="20" rx="4" stroke="#7CE0C6" stroke-width="1.5" width="76" x="12" y="110"></rect><text fill="#7CE0C6" font-family="monospace" font-size="6.5" x="16" y="124">já chegou? não cobra</text>
+<path d="M50 130 v12" stroke="#7CE0C6" stroke-width="1.2"></path>
+<rect fill="#221f2e" height="22" rx="5" stroke="#7CE0C6" stroke-width="1.5" width="76" x="12" y="142"></rect><text fill="#7CE0C6" font-family="monospace" font-size="7" x="16" y="157">dia 6: status</text>
+<path d="M88 56 h20" stroke="#F2B45C" stroke-width="1.2"></path>
+<rect height="34" rx="4" stroke="#F2B45C" stroke-width="1.5" width="76" x="108" y="40"></rect><text fill="#F2B45C" font-family="monospace" font-size="6.5" x="112" y="54">nome fora do padrão</text><text fill="#F2B45C" font-family="monospace" font-size="6.5" x="112" y="66">dois CNPJs · ilegível</text>
+<path d="M146 74 v12" stroke="#F2B45C" stroke-width="1.2"></path><circle cx="146" cy="96" r="9" stroke="#F2B45C" stroke-width="1.5"></circle><text fill="#F2B45C" font-family="monospace" font-size="8" x="142" y="100">H</text>
+<rect height="44" rx="4" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1.2" width="100" x="108" y="120"></rect><text fill="#E0736F" font-family="monospace" font-size="6.5" x="114" y="136">dado do cliente A</text><text fill="#E0736F" font-family="monospace" font-size="6.5" x="114" y="148">na mensagem do B</text><text fill="#E0736F" font-family="monospace" font-size="6.5" x="114" y="158">nunca</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="12" y="188">restrição fixa: sigilo entre clientes</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; contas a pagar em seis elos. Títulos a vencer entram; três verificações de regra (pedido, nota, tolerância de 2%, fornecedor cadastrado); os que passam formam o lote para aprovação; os que não passam vão em lista com motivo. O controller aprova; o pagamento (vermelho) é de quem tem a senha, nunca do agente." data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="20" rx="4" stroke="#948DA6" stroke-width="1.5" width="90" x="12" y="14"></rect><text fill="#ECE6D9" font-family="monospace" font-size="7" x="16" y="28">títulos 7 dias</text>
+<path d="M57 34 v12" stroke="#948DA6" stroke-width="1.2"></path>
+<rect height="40" rx="4" stroke="#7CE0C6" stroke-width="1.5" width="90" x="12" y="46"></rect><text fill="#ECE6D9" font-family="monospace" font-size="6.5" x="16" y="59">pedido + nota?</text><text fill="#ECE6D9" font-family="monospace" font-size="6.5" x="16" y="70">valor ± 2%?</text><text fill="#ECE6D9" font-family="monospace" font-size="6.5" x="16" y="81">fornecedor cadastrado?</text>
+<path d="M57 86 v12" stroke="#7CE0C6" stroke-width="1.2"></path><text fill="#7CE0C6" font-family="monospace" font-size="6.5" x="60" y="96">sim</text>
+<rect fill="#221f2e" height="22" rx="5" stroke="#7CE0C6" stroke-width="1.5" width="90" x="12" y="98"></rect><text fill="#7CE0C6" font-family="monospace" font-size="7" x="16" y="113">lote p/ aprovação</text>
+<path d="M102 66 h22" stroke="#F2B45C" stroke-width="1.2"></path><text fill="#F2B45C" font-family="monospace" font-size="6.5" x="104" y="60">não</text>
+<rect height="32" rx="4" stroke="#F2B45C" stroke-width="1.5" width="84" x="124" y="50"></rect><text fill="#F2B45C" font-family="monospace" font-size="6.5" x="128" y="63">lista com motivo:</text><text fill="#F2B45C" font-family="monospace" font-size="6.5" x="128" y="75">&gt;2% · novo · duplicado</text>
+<path d="M57 120 v14" stroke="#948DA6" stroke-width="1.2"></path>
+<circle cx="57" cy="144" r="10" stroke="#F2B45C" stroke-width="1.5"></circle><text fill="#F2B45C" font-family="monospace" font-size="9" x="53" y="148">H</text><text fill="#948DA6" font-family="monospace" font-size="7" x="72" y="148">controller aprova</text>
+<path d="M57 154 v12" stroke="#E0736F" stroke-width="1.2"></path>
+<rect height="20" rx="4" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1.2" width="90" x="12" y="166"></rect><text fill="#E0736F" font-family="monospace" font-size="6.5" x="16" y="180">pagar: quem tem senha</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="110" y="180">agente nunca</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Grife qualquer trecho para virar um cartão de revisão.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumo</p>
+<ul>
+<li>A segregação de funções que a auditoria já exige vira a matriz do agente sem tradução: ele executa tudo que se faz sem assinatura e nunca transmite, paga, fecha ou assina.</li>
+<li>Os dez processos do escritório e da área financeira cabem nessa linha. Comece pelo que não transmite nem paga: cobrança de documentos e conciliação.</li>
+<li>Na cobrança de documentos, a verificação impede cobrar o que já chegou, e a restrição fixa é que dado de um cliente nunca aparece para outro.</li>
+<li>Nas contas a pagar, o agente monta o lote conferido e o controller aprova. O pagamento é de quem tem a senha do banco, e a senha nunca entra no alcance do agente.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Seu próximo passo</p>
+<p class="na-win">Você acabou de traçar, num processo real, a linha entre o que um agente executa e o que só a assinatura resolve.</p>
+<p class="na-action">Nos próximos 15 minutos, pergunte a quem assina hoje (a contadora, o controller): "de tudo que chega para você assinar, o que você preferia que já viesse conferido?". A resposta é a primeira linha da sua ficha de qualidade.</p>
+<p class="na-hook">Na próxima aula você monta o inventário de contexto do escritório ou da área e decide a matriz de permissões, com certificado, senhas e dados bancários do lado de fora.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#trilha">← trilha</a><a href="#aula-2">próxima: contexto e governança →</a></nav>
+<footer>Aula 1 · Agentes no Contábil e no Financeiro · INEMA.CLUB PRO</footer>
+<script id="cards-1" type="application/json">
+[
+  {"front":"O dono do escritório quer que o agente já transmita as declarações dos clientes com pasta completa. Que princípio você invoca, e o que o agente faz em vez disso?","back":"Segregação de funções: quem prepara não transmite. O agente calcula, confere e entrega a guia pronta para a contadora revisar e transmitir com o certificado dela, que ele nunca acessa."},
+  {"front":"Você tem dez processos e quer escolher o primeiro. Dois passam nos três critérios do curso-base: conciliação bancária e pagamento de fornecedores. Qual entra primeiro, e por quê?","back":"Conciliação: não transmite nem paga. Pagamento termina em ação irreversível com senha de banco; entra depois, e o agente só até o lote conferido."},
+  {"front":"Qual a diferença entre a exceção 'documento com nome fora do padrão' e a exceção 'cliente mudou de regime no mês' quanto a quem resolve?","back":"Nome fora do padrão vai para a lista de dúvidas do agente, que a assistente resolve. Mudança de regime muda o cálculo de tudo: fica com a contadora."},
+  {"front":"O agente de contas a pagar aprovou um título com divergência de 1,8% e outro com 2,4%. O que a ficha de qualidade diz sobre cada um?","back":"Tolerância é 2%: o de 1,8% passa e entra no lote; o de 2,4% não passa, vai para a lista com motivo e o controller decide. Nenhum dos dois é 'pago' pelo agente."},
+  {"front":"Por que a restrição de sigilo entre clientes (nada de um na mensagem de outro) é fixa e não 'com aprovação'?","back":"Porque é sigilo fiscal, e uma mensagem enviada não volta. Não há aprovação que conserte um extrato do cliente A no e-mail do cliente B; então o agente nunca monta uma mensagem com dados de dois clientes."}
+]
+</script>
+<!-- COMPLETUDE aula-1 | tipo=FUNDAMENTO | steps=4
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo="21min" no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (4/4: Helena contadora, Diego analista financeiro, Helena, Diego)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (4/4, data-fig 1..4)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~12 min) (1)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-1"> presente (5 cartões: aplicação, decisão, contraste, aplicação, pergunta)
+  [OK] anti-duplicacao    §11.3 — 3 testes passam (substring / forma / operação)
+  [OK] teste-se-FUND      tipo=FUNDAMENTO: presente (1 quiz data-fb, step 04)
+  dosagem: quiz + cartões + qbefore-after (step 01) + qanchor (step 03) = 4 obrigatórios (teto 5). densidade: 2 quadros em 4 steps, não adjacentes. jargão de domínio: segregação de funções (.gterm).
+-->
+</section>
+<!-- ===== AULA 2 · FERRAMENTA ===== -->
+<section class="view" data-aula="2" data-tempo="21min" id="v-aula-2">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">Caderno contábil e financeiro · Aula 2</p>
+<h1>Sigilo fiscal, certificados<br/><em>e a matriz de permissões</em></h1>
+<p class="promise">Ao fim desta aula você consegue montar o inventário de contexto do seu agente e decidir a matriz de permissões, com certificado digital, senhas e dados bancários fora do alcance e um dono com nome por linha.</p>
+<p class="why">O contábil tem um tipo de dado que quase nenhuma outra área tem: a chave que age em nome do cliente. Certificado digital, senha de portal do governo, senha do banco. Quem tem a chave transmite, paga e assina. Um agente com essa chave deixa de ser um assistente e vira um risco que nenhum contrato cobre. A boa notícia é a mesma da aula anterior: o agente não precisa da chave para fazer 80% do trabalho. Esta aula mostra onde o conhecimento do escritório mora, o que entra no alcance do agente e o que fica trancado.</p>
+<p class="cue"><span class="arw">↓</span> role para estudar</p>
+</div>
+<!-- herofig · METÁFORA-DO-MUNDO-REAL: cofre pequeno com o token do certificado e a senha, ao lado da estante de pastas de clientes abertas -->
+<div class="herofig"><svg aria-hidden="true" fill="none" viewbox="0 0 300 240">
+<rect fill="#1a1824" height="170" rx="6" stroke="#948DA6" stroke-width="2" width="150" x="30" y="40"></rect>
+<path d="M30 96 h150 M30 152 h150" stroke="#948DA6" stroke-width="2"></path>
+<g fill="#ECE6D9" opacity=".85"><rect height="40" rx="2" width="14" x="40" y="52"></rect><rect height="40" rx="2" width="14" x="58" y="52"></rect><rect height="40" rx="2" width="14" x="76" y="52"></rect><rect height="40" rx="2" width="14" x="94" y="52"></rect><rect height="40" rx="2" width="14" x="112" y="52"></rect><rect height="40" rx="2" width="14" x="130" y="52"></rect><rect height="40" rx="2" width="14" x="148" y="52"></rect></g>
+<g fill="#ECE6D9" opacity=".85"><rect height="40" rx="2" width="14" x="40" y="108"></rect><rect height="40" rx="2" width="14" x="58" y="108"></rect><rect height="40" rx="2" width="14" x="76" y="108"></rect><rect height="40" rx="2" width="14" x="94" y="108"></rect><rect height="40" rx="2" width="14" x="112" y="108"></rect></g>
+<rect fill="#7CE0C6" height="40" opacity=".9" rx="2" width="32" x="130" y="108"></rect>
+<g fill="#ECE6D9" opacity=".85"><rect height="40" rx="2" width="14" x="40" y="164"></rect><rect height="40" rx="2" width="14" x="58" y="164"></rect><rect height="40" rx="2" width="14" x="76" y="164"></rect></g>
+<rect fill="#221f2e" height="90" rx="6" stroke="#948DA6" stroke-width="3" width="80" x="200" y="120"></rect>
+<circle cx="240" cy="165" r="16" stroke="#E0736F" stroke-width="3"></circle><circle cx="240" cy="165" fill="#E0736F" r="5"></circle>
+<path d="M240 149 v-6 M240 181 v6 M224 165 h-6 M256 165 h6" stroke="#E0736F" stroke-width="3"></path>
+<rect fill="#F2B45C" height="22" opacity=".9" rx="3" width="52" x="214" y="90"></rect><rect fill="#0E0D14" height="10" opacity=".4" rx="2" width="36" x="222" y="96"></rect>
+<text fill="#F2B45C" font-family="monospace" font-size="8" x="206" y="80">certificado</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<section class="step" data-fig="1" data-kind="fundamento">
+<h2><span class="n">01</span> O conhecimento do escritório mora em cinco lugares, e um deles é a cabeça de alguém</h2>
+<p>O inventário de contexto do curso-base, aplicado ao contábil, encontra sempre as mesmas fontes: o <b>sistema contábil</b> (plano de contas, lançamentos, calendário de obrigações); os <b>documentos dos clientes</b> (notas, extratos, folhas, no aplicativo ou no e-mail); os <b>portais e tabelas do governo</b> (limites de regime, alíquotas, prazos); as <b>planilhas do escritório</b> (lista de documentos por cliente, modelos de cobrança); e o <b>critério</b>, que quase sempre está na cabeça da contadora e da assistente sênior: o que é custo e o que é despesa para cada cliente, o que aceitar atrasado, qual cliente tem particularidade.</p>
+<p>As quatro primeiras fontes costumam ser pesquisáveis. A quinta é a que separa o agente genérico do agente que parece de dentro, e é a que exige uma tarde de escrita por cliente ou por tipo. Meia página por cliente, com nome claro, na pasta do escritório. Na área financeira da empresa é igual: o critério de tolerância, os fornecedores com acordo especial e as exceções conhecidas estão com o analista que está lá há mais tempo.</p>
+<!-- ex-prof --><p>Helena fez o inventário para a cobrança de documentos e chegou a doze linhas. Dez acessíveis. Duas em âmbar: "o que cada cliente costuma atrasar e como cobrar sem melindrar" (na cabeça dela) e "limites de faturamento por regime" (num e-mail de janeiro). Escreveu as duas num documento de uma página cada. A assistente nova leu e disse que era o que ela mais precisava desde que entrou.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como lido</button>
+</section>
+<section class="step" data-fig="2" data-kind="ferramenta" data-versao="ChatGPT · Claude · Copilot e sistemas contábeis com porta de serviço, set/2026">
+<h2><span class="n">02</span> Onde o agente roda hoje, e o inventário que decide isso</h2>
+<p>Em setembro de 2026, um agente do contábil roda de três formas. No <b>chat de IA com pasta de projeto</b>, você guarda a lista de documentos esperados, o modelo de cobrança e os critérios escritos, e anexa por semana o que chegou, sem dado bancário e com clientes identificados por código. No <b>aplicativo do escritório</b> (os que recebem documentos dos clientes já oferecem regras de cobrança automática). E na <b>integração com o sistema contábil</b> pela porta de serviço, em que o agente lê pastas e calendário sozinho, montada por quem cuida do sistema.</p>
+<p>O inventário é o que decide qual caminho cabe. Se as fontes principais estão em planilha e e-mail, o caminho um resolve e você aprende barato. Se estão no sistema contábil, pergunte ao fornecedor se ele tem porta de serviço e quem sabe abrir; isto parece técnico, mas funciona como perguntar se o sistema exporta relatório: a resposta é sim ou não, e quem constrói é outra pessoa.</p>
+<!-- ex-prof --><p>Diego, na indústria, tinha tudo no sistema de gestão: títulos, pedidos, notas, cadastro de fornecedores. O fornecedor do sistema confirmou porta de serviço. O único item fora era a tolerância por fornecedor (2% padrão, 5% para dois fornecedores de frete), que estava numa planilha do controller. Virou uma coluna no cadastro de fornecedores, e o inventário fechou em sete linhas, todas verdes.</p>
+<div class="qsteps">
+<p class="qsk">O inventário de contexto do contábil, linha a linha</p>
+<ol>
+<li><b>Plano de contas e calendário de obrigações</b>: sistema contábil; dono: contadora.</li>
+<li><b>Lista de documentos esperados por cliente</b>: planilha do escritório; dono: contadora.</li>
+<li><b>Documentos que chegam</b>: aplicativo ou e-mail; formato variado, o agente lê; dono: assistente.</li>
+<li><b>Limites, alíquotas e prazos do governo</b>: tabela atualizada com data; dono: contadora.</li>
+<li><b>Critério por cliente</b> (custo × despesa, o que aceitar atrasado): na cabeça, a escrever; dono: contadora.</li>
+<li><b>Na empresa: tolerância por fornecedor e acordos especiais</b>: planilha do controller, a virar coluna do cadastro; dono: controller.</li>
+</ol>
+</div>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como lido</button>
+</section>
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> O que fica trancado: chaves, dados bancários e a folha individual</h2>
+<p>Três categorias ficam fora do alcance do agente, sem "com aprovação". As <b>chaves</b>: certificado digital, senha de portal do governo, senha e token do banco. Quem tem a chave age em nome do cliente ou da empresa; o agente nunca tem. Os <b>dados bancários</b> de sócios, clientes e fornecedores, além do estritamente necessário para conferir (o agente de contas a pagar confere se o fornecedor está no cadastro aprovado, não lê a conta bancária dele). E a <b>folha individual</b>: salário por pessoa é dado pessoal; o agente trabalha com totais.</p>
+<p>Há uma quarta categoria própria do escritório: o <b>sigilo fiscal entre clientes</b>. O agente pode conhecer sessenta clientes, mas cada mensagem, cada cálculo e cada relatório trata de um só. A restrição vai por escrito no pedido: "dados de um cliente nunca aparecem em mensagem, relatório ou cálculo de outro". Na primeira versão, vale até separar um especialista por cliente na cadeia, o que o coordenador faz sem esforço.</p>
+<!-- ex-prof --><p>Helena guarda os certificados dos clientes num cofre pequeno no escritório e as senhas num gerenciador só dela. Quando desenhou a cadeia, a pergunta "o agente precisa do certificado para alguma etapa?" teve resposta não em todas: ele calcula, confere, cobra e prepara; transmitir é dela. O cofre continuou fechado, e essa foi a frase que convenceu os sócios.</p>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como lido</button>
+</section>
+<section class="step" data-fig="4" data-kind="ferramenta" data-versao="Matriz de primeira versão, set/2026">
+<h2><span class="n">04</span> A matriz do contábil e os dois erros que a derrubam</h2>
+<p>As sete ações do curso-base no agente de cobrança e obrigações: <b>ler</b> pastas, lista, calendário e tabelas, pode; <b>escrever</b> status da pasta e rascunho de cálculo, pode; <b>alterar</b> classificação de documento, com aprovação da assistente sênior; <b>enviar</b> a cobrança padrão, pode, porque o texto é fixo e só lista itens faltantes; enviar qualquer outro texto, com aprovação; <b>comprar</b>, <b>apagar</b> e <b>aprovar</b> (transmitir, entregar, fechar), não pode. Na empresa, "aprovar lote de pagamento" é do controller e "pagar" nem existe como ferramenta para o agente.</p>
+<p>Toda linha tem dono com nome, e toda ação fica registrada: o que conferiu, o que cobrou, com base em qual lista. Quando um cliente perguntar "por que me cobraram um extrato que eu já mandei?", a assistente abre o registro e responde em um minuto, e a resposta costuma ser "o arquivo veio com nome fora do padrão", que vira regra nova.</p>
+<!-- ex-prof --><p>Na indústria de Diego, a matriz tem oito linhas e uma observação que o controller fez questão de escrever: "o agente não tem, e nunca terá, usuário no sistema do banco". Não é uma linha da matriz, é uma frase no rodapé. Mas foi ela que fez a diretoria aprovar em uma reunião, porque respondia à única pergunta que todo mundo tinha.</p>
+<div class="qerr">
+<p class="qk">Erro comum</p>
+<p class="qerr-txt"><b>Colar no chat de IA um extrato bancário real, com nome do cliente e saldo, "só para ver se ele classifica direito".</b> Acontece porque o extrato parece um documento comum, e não é: é dado bancário de terceiro saindo do escritório para um serviço externo. Para testar classificação, use um extrato com nome trocado, valores alterados e conta mascarada. A lógica do agente se testa igual, e o sigilo do cliente continua inteiro.</p>
+</div>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como lido</button>
+</section>
+<section class="practice" data-mode="tarefa" data-practice="p2">
+<p class="pk">Pratique agora <span class="pcount">0/4 feito</span></p>
+<h3 class="ph">Inventário e matriz do seu agente, em uma planilha</h3>
+<p class="pgoal">Em cerca de 12 minutos, montar o inventário de contexto do processo escolhido na aula 1 (cinco colunas) e a matriz de permissões (sete ações, resposta, dono), com a lista do que fica trancado.</p>
+<p class="psafe">É uma planilha sua, sem dado de cliente: você anota onde a informação está, não a informação. Nenhum sistema é tocado, nenhuma permissão é concedida. Se não souber o dono de uma linha, escreva "?" e siga; o ponto de interrogação já é um achado para levar à contadora ou ao controller.</p>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Abra uma planilha com as cinco colunas do inventário (o que é, onde está, formato, acessível?, dono) e liste toda informação que o processo usa, passando pelas cinco fontes do passo 01. Espere entre 7 e 15 linhas.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Marque em âmbar toda linha "na cabeça de alguém", "num e-mail antigo" ou "em imagem". Para cada uma, escreva ao lado quem escreve o documento e até quando. Essa é a tarde de trabalho antes do agente.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Numa segunda aba, a matriz: sete ações (ler, escrever, alterar, enviar, comprar, apagar, aprovar), resposta (pode, com aprovação, não pode) e dono com nome. Aprovar, transmitir, pagar e fechar são "não pode".</label></li>
+<li><label><input data-ptask="4" type="checkbox"/> Embaixo da matriz, a lista do que fica trancado: certificado, senhas, dados bancários além do cadastro aprovado, folha individual, e a restrição "dado de um cliente nunca aparece para outro". Ficou pronto quando nenhuma linha da matriz está sem dono e as chaves estão na lista de fora.</label></li>
+</ol>
+<p class="pdone">Você acabou de escrever onde o conhecimento do seu processo mora e o que um agente pode e não pode fazer com ele, com as chaves do lado de fora. Essa planilha vira os blocos 5 e 7 do kit na próxima aula.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; as cinco fontes de contexto do contábil. Quatro são pesquisáveis (verde): sistema, documentos, tabelas do governo, planilhas do escritório. A quinta, o critério na cabeça da contadora (âmbar), é a que exige uma tarde de escrita e a que separa o agente genérico do que parece de dentro." data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<circle cx="110" cy="100" fill="#221f2e" r="22" stroke="#948DA6" stroke-width="1.5"></circle><text fill="#ECE6D9" font-family="monospace" font-size="8" x="92" y="104">agente</text>
+<g font-family="monospace" font-size="6.5">
+<rect fill="#7CE0C6" height="18" opacity=".85" rx="3" width="80" x="70" y="14"></rect><text fill="#0E0D14" x="76" y="26">sistema contábil</text>
+<rect fill="#7CE0C6" height="18" opacity=".85" rx="3" width="64" x="150" y="60"></rect><text fill="#0E0D14" x="154" y="72">documentos</text>
+<rect fill="#7CE0C6" height="18" opacity=".85" rx="3" width="64" x="150" y="122"></rect><text fill="#0E0D14" x="154" y="134">tab. governo</text>
+<rect fill="#7CE0C6" height="18" opacity=".85" rx="3" width="64" x="6" y="122"></rect><text fill="#0E0D14" x="10" y="134">planilhas</text>
+<rect height="18" rx="3" stroke="#F2B45C" stroke-width="1.5" width="64" x="6" y="60"></rect><text fill="#F2B45C" x="10" y="72">critério</text>
+</g>
+<path d="M110 32 v46 M150 70 l-22 18 M150 130 l-22 -18 M70 130 l22 -18 M70 70 l22 18" stroke="#37324a" stroke-width="1.2"></path>
+<text fill="#F2B45C" font-family="monospace" font-size="6.5" x="6" y="90">na cabeça</text>
+<text fill="#6C6580" font-family="monospace" font-size="7.5" x="30" y="170">meia página por cliente, nome claro</text>
+<text fill="#6C6580" font-family="monospace" font-size="7.5" x="30" y="184">= uma tarde que a assistente nova agradece</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o inventário decide o caminho. Fontes em planilha e e-mail (esquerda) cabem no chat com pasta de projeto; fontes no sistema contábil (direita) pedem a porta de serviço, e a pergunta ao fornecedor é sim ou não. Em qualquer caminho, clientes entram por código e dado bancário não entra." data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="40" rx="6" stroke="#37324a" stroke-width="1.5" width="192" x="14" y="14"></rect><text fill="#948DA6" font-family="monospace" font-size="7.5" x="20" y="30">inventário: onde estão as fontes?</text><text fill="#6C6580" font-family="monospace" font-size="7" x="20" y="46">planilha/e-mail ← → sistema contábil</text>
+<path d="M60 54 v20 M160 54 v20" stroke="#948DA6" stroke-width="1.2"></path>
+<rect height="50" rx="5" stroke="#7CE0C6" stroke-width="1.5" width="92" x="14" y="74"></rect><text fill="#7CE0C6" font-family="monospace" font-size="7" x="20" y="90">chat + pasta</text><text fill="#ECE6D9" font-family="monospace" font-size="6.5" x="20" y="102">lista, modelo, critérios</text><text fill="#948DA6" font-family="monospace" font-size="6.5" x="20" y="114">anexa por semana</text>
+<rect height="50" rx="5" stroke="#F2B45C" stroke-width="1.5" width="92" x="114" y="74"></rect><text fill="#F2B45C" font-family="monospace" font-size="7" x="120" y="90">porta de serviço</text><text fill="#ECE6D9" font-family="monospace" font-size="6.5" x="120" y="102">agente lê sozinho</text><text fill="#948DA6" font-family="monospace" font-size="6.5" x="120" y="114">"tem? quem abre?"</text>
+<rect fill="#221f2e" height="30" rx="5" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1.2" width="192" x="14" y="140"></rect>
+<text fill="#E0736F" font-family="monospace" font-size="6.5" x="20" y="153">nos dois: cliente por código,</text><text fill="#E0736F" font-family="monospace" font-size="6.5" x="20" y="164">dado bancário nunca entra</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="14" y="190">aprender barato no 1; crescer no 3</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o que fica trancado (vermelho): chaves (certificado, senhas de portal e banco), dados bancários além do cadastro aprovado, folha individual. E a parede entre clientes: o agente conhece sessenta, mas cada mensagem, cálculo e relatório trata de um só." data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="70" rx="6" stroke="#E0736F" stroke-width="1.5" width="196" x="12" y="14"></rect>
+<text fill="#E0736F" font-family="monospace" font-size="7.5" x="18" y="30">trancado</text>
+<g fill="#ECE6D9" font-family="monospace" font-size="6.5">
+<rect height="18" rx="3" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1" width="56" x="18" y="38"></rect><text x="22" y="50">certificado</text>
+<rect height="18" rx="3" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1" width="56" x="80" y="38"></rect><text x="84" y="50">senhas</text>
+<rect height="18" rx="3" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1" width="60" x="142" y="38"></rect><text x="146" y="50">dados banco</text>
+<rect height="18" rx="3" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1" width="118" x="18" y="60"></rect><text x="22" y="72">folha individual (só totais)</text>
+</g>
+<text fill="#948DA6" font-family="monospace" font-size="7.5" x="12" y="106">sigilo entre clientes</text>
+<g fill="#221f2e" stroke="#7CE0C6" stroke-width="1.2"><rect height="44" rx="4" width="56" x="12" y="114"></rect><rect height="44" rx="4" width="56" x="82" y="114"></rect><rect height="44" rx="4" width="56" x="152" y="114"></rect></g>
+<g fill="#ECE6D9" font-family="monospace" font-size="6.5"><text x="20" y="132">cliente A</text><text x="90" y="132">cliente B</text><text x="160" y="132">cliente C</text></g>
+<path d="M75 114 v44 M145 114 v44" stroke="#E0736F" stroke-width="2"></path>
+<text fill="#948DA6" font-family="monospace" font-size="6" x="20" y="150">msg · cálculo</text><text fill="#948DA6" font-family="monospace" font-size="6" x="90" y="150">msg · cálculo</text><text fill="#948DA6" font-family="monospace" font-size="6" x="160" y="150">msg · cálculo</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="12" y="184">um especialista por cliente resolve na 1ª versão</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a matriz do agente contábil: ler e escrever pode; enviar cobrança padrão pode (texto fixo, só itens faltantes); alterar classificação e enviar outro texto com aprovação; comprar, apagar e aprovar (transmitir, entregar, fechar, pagar) não pode. Rodapé: 'nunca terá usuário no banco'." data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<g fill="#948DA6" font-family="monospace" font-size="6.5"><text x="92" y="16">pode</text><text x="126" y="16">c/ aprov.</text><text x="176" y="16">não</text></g>
+<g fill="#ECE6D9" font-family="monospace" font-size="7">
+<text x="10" y="34">ler</text><text x="10" y="52">escrever</text><text x="10" y="70">enviar padrão</text><text x="10" y="88">alterar classif.</text><text x="10" y="106">enviar outro</text><text x="10" y="124">apagar</text><text x="10" y="142">aprovar/transmitir</text>
+</g>
+<path d="M88 22 v126 M122 22 v126 M170 22 v126 M88 22 h118" stroke="#37324a" stroke-width="1"></path>
+<rect fill="#7CE0C6" height="11" opacity=".9" rx="2" width="24" x="92" y="26"></rect><rect fill="#7CE0C6" height="11" opacity=".9" rx="2" width="24" x="92" y="44"></rect><rect fill="#7CE0C6" height="11" opacity=".9" rx="2" width="24" x="92" y="62"></rect>
+<rect fill="#F2B45C" height="11" opacity=".9" rx="2" width="34" x="128" y="80"></rect><rect fill="#F2B45C" height="11" opacity=".9" rx="2" width="34" x="128" y="98"></rect>
+<rect fill="#E0736F" height="11" opacity=".9" rx="2" width="24" x="176" y="116"></rect><rect fill="#E0736F" height="11" opacity=".9" rx="2" width="24" x="176" y="134"></rect>
+<rect height="24" rx="4" stroke="#E0736F" stroke-dasharray="3 3" stroke-width="1.2" width="196" x="10" y="158"></rect>
+<text fill="#E0736F" font-family="monospace" font-size="7" x="16" y="174">"não tem, e nunca terá, usuário no banco"</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="10" y="196">a frase que aprova em uma reunião</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Grife qualquer trecho para virar um cartão de revisão.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumo</p>
+<ul>
+<li>O contexto do contábil mora em cinco lugares. Quatro são pesquisáveis; o quinto, o critério por cliente, está na cabeça de alguém e exige uma tarde de escrita.</li>
+<li>O inventário decide onde o agente roda: chat com pasta de projeto para aprender barato, aplicativo do escritório, ou porta de serviço do sistema contábil para crescer.</li>
+<li>Ficam trancados: certificado, senhas, dados bancários além do cadastro aprovado e folha individual. E o sigilo entre clientes é restrição escrita no pedido.</li>
+<li>A matriz segue a escada do curso-base; enviar a cobrança padrão pode porque o texto é fixo. Transmitir, pagar e fechar não existem para o agente, e uma frase no rodapé diz isso para a diretoria.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Seu próximo passo</p>
+<p class="na-win">Você acabou de mapear onde o conhecimento do seu processo mora e de decidir o que o agente pode fazer com ele, com as chaves do lado de fora.</p>
+<p class="na-action">Nos próximos 15 minutos, escreva a primeira linha em âmbar do inventário num documento de meia página, com nome claro, e salve na pasta do escritório ou da área. A assistente nova é quem mais vai usar.</p>
+<p class="na-hook">Na última aula você monta tudo no Kit do Arquiteto de Agentes, a partir do preset contábil, e ensaia o agente com um caso fictício num chat de IA.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-1">← aula 1</a><a href="#aula-3">próxima: a especificação no kit →</a></nav>
+<footer>Aula 2 · Agentes no Contábil e no Financeiro · INEMA.CLUB PRO</footer>
+<script id="cards-2" type="application/json">
+[
+  {"front":"A assistente quer testar a classificação colando um extrato real de cliente no chat de IA. O que você confere antes, e o que ela usa no lugar?","back":"Nome do cliente, saldo e número da conta: dado bancário de terceiro saindo do escritório. Ela usa um extrato com nome trocado, valores alterados e conta mascarada; a lógica se testa igual."},
+  {"front":"O agente precisa saber a tolerância de divergência por fornecedor, que está numa planilha do controller. Que decisão de inventário resolve isso de vez?","back":"Transformar a planilha numa coluna do cadastro de fornecedores no sistema, com dono (controller). Deixa de ser 'planilha de alguém' e vira fonte pesquisável e reutilizável."},
+  {"front":"Qual a diferença entre 'enviar cobrança padrão: pode' e 'enviar outro texto: com aprovação', e o que torna a primeira defensável?","back":"A cobrança padrão tem texto fixo que só lista itens faltantes, verificados contra a pasta; nada novo entra. Qualquer texto novo pode conter erro ou dado indevido, então passa por uma pessoa."},
+  {"front":"Um sócio pergunta: 'o agente vai ter acesso ao certificado dos clientes para transmitir?'. Qual é a resposta em uma frase, e o que ela muda na reunião?","back":"'Não: ele calcula, confere, cobra e prepara; transmitir é da contadora, e o cofre continua fechado.' Responde à única pergunta que todo mundo tem e costuma aprovar o projeto."},
+  {"front":"Por que um especialista por cliente na cadeia é uma boa ideia na primeira versão do agente contábil?","back":"Porque implementa o sigilo entre clientes por construção: cada especialista só vê a pasta de um cliente, e o coordenador junta os status sem misturar dados. Depois de meses limpos, dá para simplificar."}
+]
+</script>
+<!-- COMPLETUDE aula-2 | tipo=FERRAMENTA | steps=4
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo="21min" no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (4/4: Helena, Diego, Helena, Diego)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (4/4, data-fig 1..4)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~12 min) (1)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-2"> presente (5 cartões opcionais: aplicação, decisão, contraste, aplicação, pergunta)
+  [OK] anti-duplicacao    §11.3 — 3 testes passam (substring / forma / operação)
+  [N/A] teste-se-FUND     aula é FERRAMENTA (obrigação não se aplica); sem teste-se opcional
+  dosagem: qsteps (step 02) + qerr (step 04) obrigatórios + cartões opcionais = 3 (teto 5). densidade: 2 quadros em 4 steps, não adjacentes. data-versao nos steps 02 e 04. rampa de acesso antes da porta de serviço ("perguntar se exporta relatório").
+-->
+</section>
+<!-- ===== AULA 3 · PRÁTICA/INTEGRAÇÃO ===== -->
+<section class="view" data-aula="3" data-tempo="24min" id="v-aula-3">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">Caderno contábil e financeiro · Aula 3</p>
+<h1>Sua especificação no kit:<br/><em>cobrança de documentos e obrigações</em></h1>
+<p class="promise">Ao fim desta aula você consegue montar a especificação do seu agente no Kit do Arquiteto de Agentes, a partir do preset contábil, e ensaiá-la num chat de IA com um caso fictício.</p>
+<p class="why">Você tem o processo com a linha da assinatura (aula 1), o inventário e a matriz (aula 2). Falta a página que a contadora ou o controller lê em oito minutos e que quem cuida do sistema consegue construir. O preset contábil do kit já traz um escritório de 60 clientes preenchido nos sete blocos, com as regras deste caderno embutidas: não criar conta nova, não transmitir, sigilo entre clientes, chaves fora. Seu trabalho é trocar o que é do seu escritório ou da sua área e ensaiar.</p>
+<p class="cue"><span class="arw">↓</span> role para estudar</p>
+</div>
+<!-- herofig · METÁFORA-DO-MUNDO-REAL: folha de conferência do fechamento com colunas ticadas, calculadora e o carimbo "conferido" ao lado -->
+<div class="herofig"><svg aria-hidden="true" fill="none" viewbox="0 0 300 240">
+<rect fill="#ECE6D9" height="180" opacity=".92" rx="4" width="160" x="70" y="30"></rect>
+<path d="M84 56 h132 M84 80 h132 M84 104 h132 M84 128 h132 M84 152 h132 M84 176 h132" opacity=".25" stroke="#0E0D14" stroke-width="1.5"></path>
+<path d="M150 44 v150" opacity=".25" stroke="#0E0D14" stroke-width="1.5"></path>
+<g fill="#7CE0C6"><rect height="10" rx="2" width="10" x="200" y="60"></rect><rect height="10" rx="2" width="10" x="200" y="84"></rect><rect height="10" rx="2" width="10" x="200" y="132"></rect><rect height="10" rx="2" width="10" x="200" y="156"></rect></g>
+<rect fill="#F2B45C" height="10" rx="2" width="10" x="200" y="108"></rect>
+<g opacity=".45" stroke="#0E0D14" stroke-width="2"><path d="M90 66 h44 M90 90 h36 M90 114 h48 M90 138 h40 M90 162 h30 M158 66 h30 M158 90 h24 M158 114 h30 M158 138 h20 M158 162 h28"></path></g>
+<rect fill="#221f2e" height="60" rx="4" stroke="#948DA6" stroke-width="2" width="40" x="24" y="120"></rect>
+<rect fill="#7CE0C6" height="12" opacity=".8" rx="2" width="28" x="30" y="126"></rect>
+<g fill="#948DA6"><rect height="7" rx="1" width="7" x="30" y="144"></rect><rect height="7" rx="1" width="7" x="40" y="144"></rect><rect height="7" rx="1" width="7" x="50" y="144"></rect><rect height="7" rx="1" width="7" x="30" y="155"></rect><rect height="7" rx="1" width="7" x="40" y="155"></rect><rect height="7" rx="1" width="7" x="50" y="155"></rect><rect height="7" rx="1" width="17" x="30" y="166"></rect><rect height="7" rx="1" width="7" x="50" y="166"></rect></g>
+<g transform="rotate(-10 246 190)"><rect fill="#7CE0C6" fill-opacity=".14" height="20" rx="4" stroke="#7CE0C6" stroke-width="2.5" width="60" x="216" y="180"></rect><path d="M224 190 h44" stroke="#7CE0C6" stroke-width="2.5"></path></g>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<section class="step" data-fig="1" data-kind="fundamento">
+<h2><span class="n">01</span> O caso que o preset traz, e o que muda de escritório para escritório</h2>
+<p>O preset contábil do kit é um escritório com 60 clientes, Simples e Lucro Presumido, no processo de cobrança de documentos e conferência das obrigações do mês. As regras deste caderno já estão escritas: não criar conta nova no plano de contas (marcar como dúvida), não transmitir nem entregar nada, cobrança só com o modelo, sigilo entre clientes, chaves e dados bancários fora, e "aprovar: não pode" com a observação de que transmitir é da contadora.</p>
+<p>O que muda de um escritório para outro é previsível: a quantidade e os regimes dos clientes, o dia-limite interno, o modelo de cobrança, o que está no sistema e o que está em planilha, quem é a assistente sênior. Na área financeira de uma empresa, o processo inteiro muda de nome (contas a pagar, conciliação), mas a matriz fica quase igual: prepara e confere, nunca paga nem aprova. O esqueleto fica; o conteúdo é seu.</p>
+<!-- ex-prof --><p>Helena carregou o preset e trocou cinco coisas: 60 clientes viraram os 60 dela com os regimes reais, o dia-limite passou de 5 para 4, o modelo de cobrança foi o do escritório, o limite de chamar passou para 12 pastas incompletas (ela tem menos clientes atrasados que o exemplo), e a bateria virou quinze pastas de março com os clientes identificados por código. Diego trocou quase tudo do processo, mas a matriz saiu do preset com uma alteração: "alterar" virou "não pode", porque na indústria quem corrige título é o cadastro, não o financeiro.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como lido</button>
+</section>
+<section class="step" data-fig="2" data-kind="ferramenta" data-versao="Kit do Arquiteto de Agentes v1, set/2026">
+<h2><span class="n">02</span> Carregar o preset e marcar a área liga as regras do contábil</h2>
+<p>No kit, o seletor "carregar exemplo por área" tem a opção contábil. Ao carregar, o campo "área" fica em contábil/financeiro, e isso liga três verificações a mais, além das gerais do curso-base: se "aprovar" estiver diferente de "não pode", aparece a lacuna "aprovar pagamento ou fechamento nunca é do agente"; se a restrição de não criar conta nova não aparecer em lugar nenhum, aparece outra; e se nenhuma condição de qualidade bater saldo com extrato ou fonte externa, uma terceira.</p>
+<p>Isto parece uma tela cheia de campos, mas funciona como a folha de conferência do fechamento: cada campo é um item que você preenche uma vez, e depois disso o kit monta a página sozinho. Você só mexe no que é do seu escritório. Se apagar sem querer a restrição do plano de contas, a lacuna aparece embaixo da especificação antes de você entregar.</p>
+<!-- ex-prof --><p>Diego, ao adaptar o preset para contas a pagar, escreveu no critério de sucesso "lote montado com todos os títulos da semana". O kit marcou: "nenhuma condição de qualidade bate saldo com extrato ou fonte externa". Ele acrescentou "soma do lote igual à soma dos títulos no sistema, e cada título com pedido e nota". Foi a condição que, meses depois, pegou o título duplicado.</p>
+<div class="qsteps">
+<p class="qsk">Ordem de adaptação do preset contábil</p>
+<ol>
+<li><b>Bloco 1</b>: nome do escritório ou da área, resultado na sua frase (o que a contadora ou o controller sabe, e em que dia), quem participa hoje.</li>
+<li><b>Blocos 2 e 3</b>: seus limites (dia-limite, tolerância, teto de valor) nas decisões; regimes, modelo de cobrança e sistemas no contexto. Não apague "não crie conta nova" nem "sigilo entre clientes".</li>
+<li><b>Blocos 4 e 5</b>: sistemas reais com porta de serviço (sim, não, ?) e o inventário da aula 2, com os donos.</li>
+<li><b>Bloco 6</b>: seus valores de parar e chamar; bateria de 10 a 20 casos com clientes por código, incluindo 3 difíceis (dois CNPJs, mudança de regime, documento de outro mês).</li>
+<li><b>Bloco 7</b>: nomes das pessoas; "aprovar: não pode" e a lista de chaves fora não se mexem na primeira versão.</li>
+<li><b>Lacunas</b>: leia a lista abaixo da especificação; zero lacunas de contábil antes de ensaiar.</li>
+</ol>
+</div>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como lido</button>
+</section>
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> A bateria de casos do contábil tem um calendário</h2>
+<p>No contábil, os casos difíceis da bateria seguem o calendário do mês, e vale montar a bateria com isso em mente. Dias 1 a 5: documento que chega sem CNPJ ou sem mês, cliente que manda a pasta de fevereiro em março, extrato ilegível. Dia 6: cliente com dois CNPJs na mesma pasta, cliente que mandou tudo no dia 1 (o agente não pode cobrar nada dele). Dias 7 a 15: faturamento acima do limite do regime, cliente que mudou de regime, obrigação com base de cálculo divergente. Fim do mês: cliente novo sem lista de documentos ainda.</p>
+<p>Cada caso entra na bateria com referência (cliente por código, mês, tipo) e com o que a pessoa fez na época. Sem nome, sem CNPJ real, sem valor real se não precisar. E a bateria roda de novo a cada mudança: quando Helena mudou o dia-limite de 5 para 4, três casos passaram a se comportar diferente, e ela viu antes de o agente ver.</p>
+<!-- ex-prof --><p>A bateria de Helena tem quinze casos e o mais valioso foi o número 9: cliente que mandou o extrato de duas contas num arquivo só. O agente da primeira rodada leu a primeira conta e cobrou a segunda como faltante. A regra nova, "arquivo com mais de uma conta: separar para a assistente", nasceu desse caso e entrou no bloco 6 antes de qualquer cliente real receber uma cobrança errada.</p>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como lido</button>
+</section>
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> O que o ensaio simulado costuma revelar no contábil</h2>
+<p>Quando você cola a especificação no chat com o prompt de ensaio do kit, o chat faz o papel do coordenador e roda um caso fictício. No contábil, três lacunas aparecem com frequência. A primeira: um documento chega fora da lista esperada, e a especificação não diz se o agente classifica, ignora ou pergunta. A segunda: a base de cálculo diverge do faturamento, e o coordenador não sabe se ajusta ou para. A terceira: dois clientes do mesmo grupo econômico, e a regra de sigilo entre clientes não diz se eles podem aparecer no mesmo relatório.</p>
+<p>Cada uma vira uma linha nova: "documento fora da lista: perguntar antes de classificar". "Base divergente: separar, nunca ajustar". "Grupo econômico: um relatório por CNPJ, mesmo com o mesmo sócio". Rode três casos: um comum, um difícil e a exceção. Quando os três passam, a página está pronta para a contadora ou o controller aprovar e para quem cuida do sistema construir.</p>
+<!-- ex-prof --><p>No ensaio de Diego, o chat, no papel de coordenador, perguntou: "o título 4471 tem pedido e nota, mas o fornecedor mudou os dados bancários no cadastro há dois dias; incluo no lote?". A especificação não tratava disso. Ele acrescentou ao bloco 6: "fornecedor com dados bancários alterados nos últimos 30 dias: separar para o controller". Dez minutos de ensaio, e a linha que meses depois pegou um caso real.</p>
+<div class="qapply">
+<p class="qak">Na sua área, o primeiro processo costuma ser</p>
+<ul>
+<li><b>Contadora de escritório:</b> cobrança de documentos e conferência das obrigações, o que o preset já traz. Segundo processo: classificação de lançamentos com o critério por cliente escrito.</li>
+<li><b>Analista financeiro de empresa:</b> conferência de contas a pagar até o lote para aprovação; depois, conciliação bancária com o extrato batendo com o sistema.</li>
+<li><b>Controller:</b> relatório gerencial mensal montado pelo agente a partir do sistema, com as divergências marcadas, e a assinatura continuando dele.</li>
+</ul>
+</div>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como lido</button>
+</section>
+<section class="practice" data-mode="prompt" data-practice="p3">
+<p class="pk">Pratique agora <span class="pcount">0/4 feito</span></p>
+<h3 class="ph">Monte a especificação do seu agente no kit e ensaie</h3>
+<p class="pgoal">Em cerca de 15 minutos, carregar o preset contábil no kit, adaptar ao seu escritório ou área, copiar o prompt de ensaio e rodar um caso fictício num chat de IA, recebendo a lista de lacunas.</p>
+<p class="psafe">A especificação não tem dado de cliente nem de fornecedor: tem regras, nomes de sistemas e critérios. O caso do ensaio é inventado (cliente por código, valores alterados). Nenhum agente é construído, nenhum sistema é tocado, nada é transmitido ou pago. Se o chat "transmitir" ou "pagar" algo na simulação, isso é um achado sobre a sua matriz: anote e aperte.</p>
+<div class="pcodewrap"><button class="pcopy" type="button">copiar</button><pre class="pcode">Passo a passo (o prompt de ensaio vem pronto do kit):
+
+1. Abra https://inematds.github.io/kit-arquiteto-agentes/
+2. "carregar exemplo por área" → contábil. Confira que "área: contábil / financeiro" ficou marcada.
+3. Adapte os sete blocos na ordem do passo 02 desta aula. Zero lacunas de contábil na lista abaixo da especificação.
+4. Em "Prompt de ensaio simulado", escreva o caso fictício, por exemplo:
+   &lt;Cliente C-017 (fictício), Simples Nacional, mandou notas e folha até o dia 4, faltou o extrato; veio um arquivo com duas contas bancárias; faturamento do mês 48 mil reais; uma nota de fevereiro na pasta de março&gt;
+5. "copiar prompt com a especificação" → cole numa conversa nova do seu chat de IA.
+6. Leia a narração: o coordenador deve parar pelo menos uma vez (arquivo com duas contas, nota de outro mês). Anote os itens de "o que faltou".</pre></div>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Carregue o preset contábil e adapte os blocos 1 a 7, na ordem do passo 02, usando o inventário e a matriz da aula 2. Ficou certo quando a lista de lacunas não tem nenhum item começando com "Contábil:".</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Escreva um caso fictício com pelo menos um ponto difícil do calendário do passo 03 (dois CNPJs, arquivo com duas contas, mudança de regime, documento de outro mês). Cliente por código, valores inventados.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Copie o prompt com a especificação, cole numa conversa nova e acompanhe. O coordenador deve parar pelo menos uma vez para perguntar ou pedir aprovação. Se executou tudo direto, ou se "transmitiu" algo, a matriz ou a ficha estão frouxas: anote onde deveria ter parado.</label></li>
+<li><label><input data-ptask="4" type="checkbox"/> Leia a lista de "o que faltou" e acrescente cada item como uma linha nova em algum bloco do kit. Ficou pronto quando a especificação corrigida tem pelo menos uma linha nova, você baixou o .md, e sabe para quem vai: a contadora ou o controller, e quem cuida do sistema.</label></li>
+</ol>
+<p class="pdone">Você acabou de produzir a especificação de um agente para o seu escritório ou área, com as chaves do lado de fora e a assinatura no lugar certo, e a ensaiou antes de qualquer construção. Essa página é o que separa "vamos usar IA" de um projeto que a contadora assina.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o preset contábil como esqueleto e o que muda por escritório (verde): clientes e regimes, dia-limite, modelo de cobrança, sistemas, donos, bateria. As linhas âmbar não se trocam na primeira versão: não criar conta, não transmitir, sigilo entre clientes, chaves fora, aprovar não pode." data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="172" rx="8" stroke="#37324a" stroke-width="1.5" width="192" x="14" y="14"></rect>
+<text fill="#948DA6" font-family="monospace" font-size="7.5" x="20" y="30">preset contábil: escritório 60 clientes</text>
+<g font-family="monospace" font-size="6.5">
+<rect fill="#7CE0C6" height="14" opacity=".8" rx="2" width="86" x="20" y="40"></rect><text fill="#0E0D14" x="24" y="50">clientes e regimes</text>
+<rect fill="#7CE0C6" height="14" opacity=".8" rx="2" width="90" x="110" y="40"></rect><text fill="#0E0D14" x="114" y="50">dia-limite</text>
+<rect fill="#7CE0C6" height="14" opacity=".8" rx="2" width="86" x="20" y="60"></rect><text fill="#0E0D14" x="24" y="70">modelo de cobrança</text>
+<rect fill="#7CE0C6" height="14" opacity=".8" rx="2" width="90" x="110" y="60"></rect><text fill="#0E0D14" x="114" y="70">sistemas reais</text>
+<rect fill="#7CE0C6" height="14" opacity=".8" rx="2" width="86" x="20" y="80"></rect><text fill="#0E0D14" x="24" y="90">donos com nome</text>
+<rect fill="#7CE0C6" height="14" opacity=".8" rx="2" width="90" x="110" y="80"></rect><text fill="#0E0D14" x="114" y="90">bateria por código</text>
+<rect height="14" rx="2" stroke="#F2B45C" stroke-width="1.2" width="180" x="20" y="108"></rect><text fill="#F2B45C" x="24" y="118">não criar conta · não transmitir · não pagar</text>
+<rect height="14" rx="2" stroke="#F2B45C" stroke-width="1.2" width="180" x="20" y="128"></rect><text fill="#F2B45C" x="24" y="138">sigilo entre clientes</text>
+<rect height="14" rx="2" stroke="#F2B45C" stroke-width="1.2" width="180" x="20" y="148"></rect><text fill="#F2B45C" x="24" y="158">chaves fora · aprovar: não pode</text>
+</g>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="20" y="180">verde = troca · âmbar = só após meses limpos</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; ao marcar 'área: contábil', o kit liga três verificações a mais: aprovar diferente de 'não pode', ausência da restrição de conta nova, e nenhuma condição batendo saldo com fonte externa. Cada uma acende uma lacuna (âmbar) abaixo da especificação." data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="22" rx="4" stroke="#7CE0C6" stroke-width="1.5" width="140" x="14" y="16"></rect><text fill="#7CE0C6" font-family="monospace" font-size="7.5" x="20" y="31">área: contábil / financeiro</text>
+<path d="M84 38 v14 M30 52 h108 M30 52 v10 M84 52 v10 M138 52 v10" stroke="#948DA6" stroke-width="1.2"></path>
+<g fill="#ECE6D9" font-family="monospace" font-size="6.5">
+<rect height="34" rx="3" stroke="#948DA6" stroke-width="1" width="60" x="8" y="62"></rect><text x="12" y="76">aprovar =</text><text x="12" y="86">não pode?</text>
+<rect height="34" rx="3" stroke="#948DA6" stroke-width="1" width="60" x="74" y="62"></rect><text x="78" y="76">"não crie</text><text x="78" y="86">conta nova"?</text>
+<rect height="34" rx="3" stroke="#948DA6" stroke-width="1" width="66" x="140" y="62"></rect><text x="144" y="76">bate saldo</text><text x="144" y="86">c/ extrato?</text>
+</g>
+<path d="M38 96 v14 M104 96 v14 M173 96 v14" stroke="#F2B45C" stroke-width="1.2"></path>
+<rect fill="#221f2e" height="60" rx="6" stroke="#37324a" stroke-width="1" width="192" x="14" y="110"></rect>
+<text fill="#948DA6" font-family="monospace" font-size="7" x="20" y="124">lacunas</text>
+<rect fill="#F2B45C" height="10" opacity=".7" rx="2" width="180" x="20" y="130"></rect><rect fill="#F2B45C" height="10" opacity=".7" rx="2" width="180" x="20" y="144"></rect><rect fill="#F2B45C" height="8" opacity=".7" rx="2" width="180" x="20" y="158"></rect>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="20" y="188">antes de entregar, não depois</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a bateria do contábil segue o calendário do mês: dias 1 a 5 (documento sem CNPJ, pasta do mês errado, extrato ilegível), dia 6 (dois CNPJs, cliente que mandou tudo), dias 7 a 15 (limite do regime, mudança de regime, base divergente), fim do mês (cliente novo). Os âmbar são os difíceis de propósito." data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<path d="M14 40 h192" stroke="#37324a" stroke-width="2"></path>
+<g fill="#948DA6" font-family="monospace" font-size="7"><text x="14" y="30">dia 1–5</text><text x="72" y="30">dia 6</text><text x="118" y="30">dia 7–15</text><text x="176" y="30">fim</text></g>
+<path d="M60 34 v12 M108 34 v12 M170 34 v12" stroke="#37324a" stroke-width="1"></path>
+<g font-family="monospace" font-size="6">
+<rect height="14" rx="2" stroke="#948DA6" stroke-width="1" width="42" x="14" y="50"></rect><text fill="#ECE6D9" x="17" y="60">sem CNPJ</text>
+<rect fill="#F2B45C" height="14" opacity=".85" rx="2" width="42" x="14" y="68"></rect><text fill="#0E0D14" x="17" y="78">mês errado</text>
+<rect height="14" rx="2" stroke="#948DA6" stroke-width="1" width="42" x="14" y="86"></rect><text fill="#ECE6D9" x="17" y="96">ilegível</text>
+<rect fill="#F2B45C" height="14" opacity=".85" rx="2" width="40" x="64" y="50"></rect><text fill="#0E0D14" x="67" y="60">2 CNPJs</text>
+<rect height="14" rx="2" stroke="#948DA6" stroke-width="1" width="40" x="64" y="68"></rect><text fill="#ECE6D9" x="67" y="78">tudo ok</text>
+<rect fill="#F2B45C" height="14" opacity=".85" rx="2" width="54" x="112" y="50"></rect><text fill="#0E0D14" x="115" y="60">limite regime</text>
+<rect fill="#F2B45C" height="14" opacity=".85" rx="2" width="54" x="112" y="68"></rect><text fill="#0E0D14" x="115" y="78">mudou regime</text>
+<rect height="14" rx="2" stroke="#948DA6" stroke-width="1" width="54" x="112" y="86"></rect><text fill="#ECE6D9" x="115" y="96">base diverge</text>
+<rect height="14" rx="2" stroke="#948DA6" stroke-width="1" width="32" x="174" y="50"></rect><text fill="#ECE6D9" x="177" y="60">novo</text>
+</g>
+<rect height="30" rx="5" stroke="#7CE0C6" stroke-width="1.2" width="192" x="14" y="120"></rect><text fill="#7CE0C6" font-family="monospace" font-size="6.5" x="20" y="133">caso 9: extrato de 2 contas em 1 arquivo</text><text fill="#948DA6" font-family="monospace" font-size="6.5" x="20" y="144">→ regra nova antes de qualquer cliente real</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="14" y="176">por código, sem nome; roda de novo a cada mudança</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o ciclo do ensaio no contábil: especificação e caso fictício entram, o chat faz o coordenador, e as três lacunas típicas (documento fora da lista, base divergente, grupo econômico) voltam em âmbar e viram linhas novas. Três casos passando, a página vai para a contadora ou o controller e para o sistema." data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="#221f2e" height="56" rx="6" stroke="#7CE0C6" stroke-width="1.5" width="62" x="12" y="66"></rect><text fill="#7CE0C6" font-family="monospace" font-size="7" x="18" y="90">especif.</text><text fill="#948DA6" font-family="monospace" font-size="6.5" x="18" y="104">+ caso fict.</text>
+<path d="M74 94 h30" stroke="#948DA6" stroke-width="1.5"></path>
+<rect height="76" rx="10" stroke="#37324a" stroke-width="1.5" width="104" x="104" y="56"></rect><rect fill="#221f2e" height="14" rx="10" width="104" x="104" y="56"></rect>
+<text fill="#ECE6D9" font-family="monospace" font-size="7" x="112" y="84">chat = coordenador</text>
+<g fill="#F2B45C" font-family="monospace" font-size="6">
+<rect height="9" rx="2" stroke="#F2B45C" stroke-width="1" width="92" x="110" y="92"></rect><text x="114" y="99">doc fora da lista?</text>
+<rect height="9" rx="2" stroke="#F2B45C" stroke-width="1" width="92" x="110" y="104"></rect><text x="114" y="111">base divergente?</text>
+<rect height="9" rx="2" stroke="#F2B45C" stroke-width="1" width="92" x="110" y="116"></rect><text x="114" y="123">grupo econômico?</text>
+</g>
+<path d="M156 132 v20 h-114 v-30" fill="none" stroke="#F2B45C" stroke-width="1.5"></path><path d="M39 126 l3 -4 3 4" fill="none" stroke="#F2B45C" stroke-width="1.5"></path>
+<text fill="#F2B45C" font-family="monospace" font-size="7" x="50" y="168">lacuna → linha nova → roda de novo</text>
+<text fill="#948DA6" font-family="monospace" font-size="8" x="12" y="30">3 casos: comum · difícil · exceção</text>
+<text fill="#6C6580" font-family="monospace" font-size="7" x="12" y="192">3 passam → contadora/controller + sistema</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Grife qualquer trecho para virar um cartão de revisão.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumo</p>
+<ul>
+<li>O preset contábil traz um escritório de 60 clientes nos sete blocos, com as regras do caderno embutidas. Você troca clientes, dia-limite, modelo, sistemas, donos e bateria; não troca conta nova, transmitir, sigilo e chaves sem meses de registro limpo.</li>
+<li>Marcar "área: contábil" liga três verificações a mais no kit, que acendem lacunas antes de você entregar a página.</li>
+<li>A bateria do contábil segue o calendário do mês, e os casos difíceis se concentram no dia 6 e na segunda semana. Ela roda de novo a cada mudança de limite.</li>
+<li>O ensaio costuma revelar documento fora da lista, base divergente e grupo econômico. Cada resposta vira uma linha nova, e a que parece pequena é a que pega o caso real meses depois.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Seu próximo passo</p>
+<p class="na-win">Você acabou de especificar e ensaiar o agente do seu escritório ou da sua área, com as chaves do lado de fora e a assinatura no lugar certo.</p>
+<p class="na-action">Nos próximos 15 minutos, mande o .md para quem assina, com uma frase: "isto o agente confere e prepara, isto ele nunca acessa, isto ele não pode fazer, e este é o responsável por cada linha". Peça oito minutos e uma pergunta.</p>
+<p class="na-hook">O segundo processo dos dez (classificação, conciliação, contas a receber) começa pela aula 1 deste caderno, com o mesmo kit e a mesma matriz. Vai levar metade do tempo.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-2">← aula 2</a><a href="#trilha">concluir o caderno →</a></nav>
+<footer>Aula 3 · Agentes no Contábil e no Financeiro · INEMA.CLUB PRO</footer>
+<!-- aula PRÁTICA/INTEGRAÇÃO: 3 cartões de aplicação integradores, decisão registrada -->
+<script id="cards-3" type="application/json">
+[
+  {"front":"Ao adaptar o preset para contas a pagar, você escreveu no critério 'lote montado com todos os títulos da semana'. Que lacuna o kit acende, e como você reescreve?","back":"'Nenhuma condição bate saldo com extrato ou fonte externa'. Reescrever: 'soma do lote igual à soma dos títulos no sistema, e cada título com pedido e nota correspondentes'."},
+  {"front":"No ensaio, o coordenador incluiu no lote um título de fornecedor que alterou os dados bancários há dois dias, sem perguntar. Que linha faltou, e em que bloco entra?","back":"'Fornecedor com dados bancários alterados nos últimos 30 dias: separar para o controller'. Entra no bloco 6 (parar) e como exceção no bloco 2."},
+  {"front":"A contadora pergunta 'por que o agente cobrou o extrato de um cliente que mandou as duas contas num arquivo só?'. O que você aponta no registro, e o que muda na especificação?","back":"O registro mostra que o agente leu a primeira conta e marcou a segunda como faltante. Muda o bloco 6: 'arquivo com mais de uma conta: separar para a assistente, não cobrar'. E o caso entra na bateria como difícil."}
+]
+</script>
+<!-- COMPLETUDE aula-3 | tipo=PRATICA | steps=4
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo="24min" no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (4/4: Helena+Diego, Diego, Helena, Diego)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (4/4, data-fig 1..4)
+  [OK] practice           .practice[data-mode="prompt"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~15 min) (1)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-3"> presente (3 cartões de aplicação integradores)
+  [OK] anti-duplicacao    §11.3 — 3 testes passam (substring / forma / operação)
+  [N/A] teste-se-FUND     aula é PRÁTICA/INTEGRAÇÃO (obrigação não se aplica); sem teste-se opcional
+  dosagem: qsteps (step 02) + mini-caso integrador (prosa: Helena e Diego adaptando o preset e ensaiando) obrigatórios + qapply opcional (step 04, 3 perfis) = 3 (teto 5). densidade: 2 quadros em 4 steps, não adjacentes. data-versao no step 02. rampa de acesso antes da tela do kit ("folha de conferência do fechamento").
+-->
+</section>
+<script src="assets/curso.js"></script>
+</body>
+</html>
