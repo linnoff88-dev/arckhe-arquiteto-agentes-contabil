@@ -1,4 +1,4 @@
-﻿# Agentes no ContÃ¡bil e no Financeiro Â· Caderno
+ï»¿# Agentes no ContêÂ¡bil e no Financeiro êÂ· Caderno
 
 <div align="center">
   <img src="capa/logo.svg" alt="Arckhé AI" height="48" />
@@ -6,7 +6,7 @@
 </div>
 
 
-Caderno de profissÃ£o (formato v5, 3 aulas) do curso [Arquiteto de Trabalho com IA](https://linnoff88-dev.github.io/ um processo do escritÃ³rio contÃ¡bil ou da Ã¡rea financeira especificado com agentes de IA, segregaÃ§Ã£o de funÃ§Ãµes, chaves fora do alcance e governanÃ§a escrita. Usa o [Kit do Arquiteto de Agentes](https://linnoff88-dev.github.io/ com o preset contÃ¡bil.
+Caderno de profissêÂ£o (formato v5, 3 aulas) do curso [Arquiteto de Trabalho com IA](https://linnoff88-dev.github.io/ um processo do escritêÂ³rio contêÂ¡bil ou da êÂ¡rea financeira especificado com agentes de IA, segregaêÂ§êÂ£o de funêÂ§êÂµes, chaves fora do alcance e governanêÂ§a escrita. Usa o [Kit do Arquiteto de Agentes](https://linnoff88-dev.github.io/ com o preset contêÂ¡bil.
 
 Publicado em https://linnoff88-dev.github.io/
 
